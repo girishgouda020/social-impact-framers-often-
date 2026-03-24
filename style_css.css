@@ -14,7 +14,6 @@
 }
 
 body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
-
 a { text-decoration: none; color: inherit; }
 
 /* ── NAVBAR ── */
@@ -57,7 +56,7 @@ a { text-decoration: none; color: inherit; }
 .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
 
-/* ── HERO (Welcome Page) ── */
+/* ── HERO ── */
 .hero {
   min-height: 100vh;
   background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #52b788 100%);
@@ -70,22 +69,8 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   overflow: hidden;
 }
-.hero::before {
-  content: '';
-  position: absolute;
-  width: 600px; height: 600px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 50%;
-  top: -150px; right: -150px;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  width: 400px; height: 400px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 50%;
-  bottom: -100px; left: -100px;
-}
+.hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: rgba(255,255,255,0.04); border-radius: 50%; top: -150px; right: -150px; }
+.hero::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; bottom: -100px; left: -100px; }
 .hero-badge { background: rgba(255,255,255,0.15); color: #b7e4c7; padding: 6px 18px; border-radius: 20px; font-size: .85rem; font-weight: 600; margin-bottom: 1.5rem; display: inline-block; backdrop-filter: blur(10px); }
 .hero h1 { font-size: clamp(2.2rem, 5vw, 4rem); color: #fff; font-weight: 800; line-height: 1.15; margin-bottom: 1rem; }
 .hero h1 span { color: #b7e4c7; }
@@ -131,13 +116,13 @@ footer span { color: var(--green-light); }
 .auth-footer a { color: var(--green); font-weight: 600; }
 
 /* ── ROLE SELECTION ── */
-.role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
-.role-card { border: 2px solid #e5e7eb; border-radius: var(--radius); padding: 1.5rem; text-align: center; cursor: pointer; transition: all .2s; }
+.role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.role-card { border: 2px solid #e5e7eb; border-radius: var(--radius); padding: 1.2rem .8rem; text-align: center; cursor: pointer; transition: all .2s; }
 .role-card:hover { border-color: var(--green-light); background: var(--green-pale); }
 .role-card.selected { border-color: var(--green); background: var(--green-pale); }
-.role-card .role-icon { font-size: 2.5rem; margin-bottom: .7rem; }
-.role-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); }
-.role-card p { font-size: .8rem; color: var(--gray); margin-top: .3rem; }
+.role-card .role-icon { font-size: 2rem; margin-bottom: .5rem; }
+.role-card h3 { font-size: .95rem; font-weight: 700; color: var(--dark); }
+.role-card p { font-size: .75rem; color: var(--gray); margin-top: .2rem; }
 
 /* ── DASHBOARD ── */
 .page-wrapper { max-width: 1200px; margin: 0 auto; padding: 2rem; }
@@ -164,7 +149,7 @@ footer span { color: var(--green-light); }
 .product-body h3 { font-size: 1rem; font-weight: 700; }
 .product-body .price { color: var(--green); font-size: 1.2rem; font-weight: 800; margin: .4rem 0; }
 .product-body .seller { color: var(--gray); font-size: .8rem; margin-bottom: .8rem; }
-.product-body .type-badge { font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.type-badge { font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
 .badge-retail { background: #dbeafe; color: #1d4ed8; }
 .badge-wholesale { background: #fef3c7; color: #92400e; }
 .badge-both { background: var(--green-pale); color: var(--green); }
@@ -181,8 +166,8 @@ footer span { color: var(--green-light); }
 .cart-item-info p { color: var(--gray); font-size: .85rem; }
 .cart-item-price { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 .cart-summary { background: var(--white); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
-.cart-summary .total-row { display: flex; justify-content: space-between; align-items: center; padding: .6rem 0; border-bottom: 1px solid #f3f4f6; font-size: .95rem; }
-.cart-summary .total-row.grand { font-size: 1.2rem; font-weight: 800; color: var(--green); border-bottom: none; padding-top: 1rem; }
+.total-row { display: flex; justify-content: space-between; align-items: center; padding: .6rem 0; border-bottom: 1px solid #f3f4f6; font-size: .95rem; }
+.total-row.grand { font-size: 1.2rem; font-weight: 800; color: var(--green); border-bottom: none; padding-top: 1rem; }
 
 /* ── ORDERS ── */
 .order-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.2rem; }
@@ -214,4 +199,6 @@ footer span { color: var(--green-light); }
   .form-row { grid-template-columns: 1fr; }
   .welcome-banner { flex-direction: column; }
   .hero h1 { font-size: 2rem; }
+  #cart-layout { grid-template-columns: 1fr !important; }
+  #recent-section { grid-template-columns: 1fr !important; }
 }
