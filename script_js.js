@@ -21,15 +21,14 @@ function addProduct(product) {
 }
 function seedProducts() {
   if (getProducts().length > 0) return;
-  const seeds = [
-    { id: '1', name: 'Fresh Tomatoes', price: 40, unit: 'kg', seller: 'Ravi Farm', type: 'both', emoji: '🍅' },
-    { id: '2', name: 'Organic Wheat', price: 25, unit: 'kg', seller: 'Green Fields', type: 'wholesale', emoji: '🌾' },
-    { id: '3', name: 'Alphonso Mangoes', price: 120, unit: 'dozen', seller: 'Konkan Farms', type: 'retail', emoji: '🥭' },
-    { id: '4', name: 'Basmati Rice', price: 80, unit: 'kg', seller: 'Punjab Harvest', type: 'both', emoji: '🍚' },
-    { id: '5', name: 'Fresh Spinach', price: 30, unit: 'bunch', seller: 'Ravi Farm', type: 'retail', emoji: '🥬' },
-    { id: '6', name: 'Potatoes', price: 20, unit: 'kg', seller: 'Hill Farms', type: 'both', emoji: '🥔' },
-  ];
-  saveProducts(seeds);
+  saveProducts([
+    { id: '1', name: 'Fresh Tomatoes',   price: 40,  unit: 'kg',    seller: 'Ravi Farm',     type: 'both',      emoji: '🍅' },
+    { id: '2', name: 'Organic Wheat',    price: 25,  unit: 'kg',    seller: 'Green Fields',  type: 'wholesale', emoji: '🌾' },
+    { id: '3', name: 'Alphonso Mangoes', price: 120, unit: 'dozen', seller: 'Konkan Farms',  type: 'retail',    emoji: '🥭' },
+    { id: '4', name: 'Basmati Rice',     price: 80,  unit: 'kg',    seller: 'Punjab Harvest',type: 'both',      emoji: '🍚' },
+    { id: '5', name: 'Fresh Spinach',    price: 30,  unit: 'bunch', seller: 'Ravi Farm',     type: 'retail',    emoji: '🥬' },
+    { id: '6', name: 'Potatoes',         price: 20,  unit: 'kg',    seller: 'Hill Farms',    type: 'both',      emoji: '🥔' },
+  ]);
 }
 
 // ── CART ──
@@ -38,14 +37,11 @@ function saveCart(c) { set('fm_cart', c); }
 function addToCart(productId, qty = 1) {
   const cart = getCart();
   const existing = cart.find(i => i.productId === productId);
-  if (existing) { existing.qty += qty; }
-  else { cart.push({ productId, qty }); }
+  if (existing) { existing.qty += qty; } else { cart.push({ productId, qty }); }
   saveCart(cart);
   showToast('Added to cart 🛒', 'success');
 }
-function removeFromCart(productId) {
-  saveCart(getCart().filter(i => i.productId !== productId));
-}
+function removeFromCart(productId) { saveCart(getCart().filter(i => i.productId !== productId)); }
 function clearCart() { saveCart([]); }
 function cartTotal() {
   const products = getProducts();
@@ -89,9 +85,9 @@ function renderNavbar(activePage) {
   if (!user) return;
   const links = [
     { href: 'dashboard_html.html', label: '🏠 Dashboard', key: 'dashboard' },
-    { href: 'products_html.html', label: '🌿 Products', key: 'products' },
-    { href: 'cart_html.html', label: '🛒 Cart', key: 'cart' },
-    { href: 'orders_html.html', label: '📦 Orders', key: 'orders' },
+    { href: 'products_html.html',  label: '🌿 Products',  key: 'products'  },
+    { href: 'cart_html.html',      label: '🛒 Cart',      key: 'cart'      },
+    { href: 'orders_html.html',    label: '📦 Orders',    key: 'orders'    },
   ];
   const navEl = document.getElementById('navbar');
   if (!navEl) return;
@@ -113,7 +109,7 @@ function showToast(msg, type = '') {
   if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
   t.textContent = msg;
   t.className = `toast ${type} show`;
-  setTimeout(() => t.className = 'toast', 2800);
+  setTimeout(() => { t.className = 'toast'; }, 2800);
 }
 
 // ── INIT ──
