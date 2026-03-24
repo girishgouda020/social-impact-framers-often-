@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Role – FarmerMart</title>
+  <link rel="stylesheet" href="style_css.css"/>
+</head>
+<body>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="logo-big">🌾 FarmerMart</div>
+    <div class="subtitle" id="greet">Welcome! Choose your role</div>
+
+    <div class="role-grid">
+      <div class="role-card" onclick="selectRole('Farmer', this)">
+        <div class="role-icon">👨🌾</div>
+        <h3>Farmer</h3>
+        <p>List & sell your produce</p>
+      </div>
+      <div class="role-card" onclick="selectRole('Customer', this)">
+        <div class="role-icon">🛒</div>
+        <h3>Customer</h3>
+        <p>Buy fresh produce</p>
+      </div>
+      <div class="role-card" onclick="selectRole('Wholesaler', this)">
+        <div class="role-icon">🏢</div>
+        <h3>Wholesaler</h3>
+        <p>Bulk buying for business</p>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="confirmRole()">Continue →</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script_js.js"></script>
+<script>
+  const tempUser = get('fm_temp_user');
+  if (!tempUser) window.location.href = 'login_html.html';
+  document.getElementById('greet').textContent = `Welcome, ${tempUser}! Choose your role`;
+
+  let chosenRole = null;
+  function selectRole(role, el) {
+    chosenRole = role;
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function confirmRole() {
+    if (!chosenRole) { showToast('Please select a role', 'error'); return; }
+    set('fm_user', { username: tempUser, role: chosenRole });
+    localStorage.removeItem('fm_temp_user');
+    window.location.href = 'dashboard_html.html';
+  }
+</script>
+</body>
+</html>

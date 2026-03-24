@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – FarmerMart</title>
+  <link rel="stylesheet" href="style_css.css"/>
+</head>
+<body>
+<div id="navbar" class="navbar"></div>
+
+<div class="page-wrapper">
+  <div class="welcome-banner">
+    <div>
+      <h2 id="welcome-msg">Welcome back! 👋</h2>
+      <p id="welcome-sub">Here's what's happening on FarmerMart today.</p>
+    </div>
+    <a href="products_html.html" class="btn btn-white">Browse Products →</a>
+  </div>
+
+  <div class="dash-grid" id="dash-cards"></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap;" id="recent-section">
+    <div class="card">
+      <h3 style="font-weight:700;margin-bottom:1rem;">🛒 Cart Summary</h3>
+      <div id="cart-summary-dash"></div>
+    </div>
+    <div class="card">
+      <h3 style="font-weight:700;margin-bottom:1rem;">📦 Recent Orders</h3>
+      <div id="orders-summary-dash"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script_js.js"></script>
+<script>
+  const user = requireAuth();
+  if (user) {
+    renderNavbar('dashboard');
+    document.getElementById('welcome-msg').textContent = `Welcome back, ${user.username}! 👋`;
+    document.getElementById('welcome-sub').textContent = `You're logged in as a ${user.role}.`;
+
+    const products = getProducts();
+    const cart = getCart();
+    const orders = getOrders().filter(o => o.user === user.username);
+
+    const cards = [
+      { icon: '🌿', label: 'Products', count: products.length, link: 'products_html.html', desc: 'Browse all listings' },
+      { icon: '🛒', label: 'Cart Items', count: cart.length, link: 'cart_html.html', desc: 'Items in your cart' },
+      { icon: '📦', label: 'My Orders', count: orders.length, link: 'orders_html.html', desc: 'Track your orders' },
+    ];
+    if (user.role === 'Farmer') {
+      cards.push({ icon: '➕', label: 'Add Product', count: '→', link: 'products_html.html', desc: 'List a new product' });
+    }
+
+    document.getElementById('dash-cards').innerHTML = cards.map(c => `
+      <div class="dash-card" onclick="location.href='${c.link}'">
+        <div class="dc-icon">${c.icon}</div>
+        <h3>${c.label}</h3>
+        <p>${c.desc}</p>
+        <div class="dc-count">${c.count}</div>
+      </div>`).join('');
+
+    // Cart summary
+    const cartEl = document.getElementById('cart-summary-dash');
+    if (!cart.length) {
+      cartEl.innerHTML = '<div class="empty-state" style="padding:1.5rem"><div class="empty-icon">🛒</div><p>Cart is empty</p></div>';
+    } else {
+      cartEl.innerHTML = cart.slice(0, 3).map(item => {
+        const p = products.find(x => x.id === item.productId);
+        return p ? `<div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #f3f4f6;font-size:.9rem">
+          <span>${p.emoji} ${p.name} ×${item.qty}</span>
+          <span style="font-weight:700;color:var(--green)">₹${p.price * item.qty}</span>
+        </div>` : '';
+      }).join('') + `<div style="margin-top:.8rem;font-weight:800;color:var(--green)">Total: ₹${cartTotal()}</div>`;
+    }
+
+    // Orders summary
+    const ordEl = document.getElementById('orders-summary-dash');
+    if (!orders.length) {
+      ordEl.innerHTML = '<div class="empty-state" style="padding:1.5rem"><div class="empty-icon">📦</div><p>No orders yet</p></div>';
+    } else {
+      ordEl.innerHTML = orders.slice(0, 3).map(o => `
+        <div style="padding:.6rem 0;border-bottom:1px solid #f3f4f6;">
+          <div style="display:flex;justify-content:space-between;font-size:.88rem">
+            <span style="font-weight:700">${o.id}</span>
+            <span class="status-badge status-pending">${o.status}</span>
+          </div>
+          <div style="color:var(--gray);font-size:.8rem;margin-top:.2rem">₹${o.total} · ${o.date}</div>
+        </div>`).join('');
+    }
+  }
+</script>
+</body>
+</html>

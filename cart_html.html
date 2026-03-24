@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart – FarmerMart</title>
+  <link rel="stylesheet" href="style_css.css"/>
+</head>
+<body>
+<div id="navbar" class="navbar"></div>
+
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1>🛒 Your Cart</h1>
+    <p>Review your items before placing an order</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start;" id="cart-layout">
+    <div id="cart-items"></div>
+    <div class="cart-summary" id="cart-summary-box" style="display:none">
+      <h3 style="font-weight:700;margin-bottom:1rem;">Order Summary</h3>
+      <div id="summary-lines"></div>
+      <div class="total-row grand">
+        <span>Total</span>
+        <span id="grand-total">₹0</span>
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="handlePlaceOrder()">Place Order 🎉</button>
+      <button class="btn btn-outline btn-full" style="margin-top:.6rem" onclick="handleClearCart()">Clear Cart</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script_js.js"></script>
+<script>
+  const user = requireAuth();
+  if (user) { renderNavbar('cart'); renderCart(); }
+
+  function renderCart() {
+    const cart = getCart();
+    const products = getProducts();
+    const itemsEl = document.getElementById('cart-items');
+    const summaryBox = document.getElementById('cart-summary-box');
+
+    if (!cart.length) {
+      itemsEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🛒</div><h3>Your cart is empty</h3><p>Go browse some fresh products!</p><a href="products_html.html" class="btn btn-primary" style="margin-top:1rem">Browse Products</a></div>`;
+      summaryBox.style.display = 'none';
+      return;
+    }
+
+    summaryBox.style.display = 'block';
+    itemsEl.innerHTML = cart.map(item => {
+      const p = products.find(x => x.id === item.productId);
+      if (!p) return '';
+      return `
+      <div class="cart-item">
+        <div class="cart-item-icon">${p.emoji || '🌿'}</div>
+        <div class="cart-item-info">
+          <h4>${p.name}</h4>
+          <p>₹${p.price} / ${p.unit} · Qty: ${item.qty}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <span class="cart-item-price">₹${p.price * item.qty}</span>
+          <button class="btn btn-danger btn-sm" onclick="handleRemove('${p.id}')">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('summary-lines').innerHTML = cart.map(item => {
+      const p = products.find(x => x.id === item.productId);
+      return p ? `<div class="total-row"><span>${p.name} ×${item.qty}</span><span>₹${p.price * item.qty}</span></div>` : '';
+    }).join('');
+    document.getElementById('grand-total').textContent = `₹${cartTotal()}`;
+  }
+
+  function handleRemove(id) { removeFromCart(id); renderCart(); showToast('Item removed', ''); }
+  function handleClearCart() { clearCart(); renderCart(); showToast('Cart cleared', ''); }
+  function handlePlaceOrder() {
+    if (placeOrder()) setTimeout(() => window.location.href = 'orders_html.html', 1200);
+  }
+</script>
+</body>
+</html>

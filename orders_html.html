@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orders – FarmerMart</title>
+  <link rel="stylesheet" href="style_css.css"/>
+</head>
+<body>
+<div id="navbar" class="navbar"></div>
+
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1>📦 My Orders</h1>
+    <p>Track all your placed orders</p>
+  </div>
+
+  <div id="orders-list"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script_js.js"></script>
+<script>
+  const user = requireAuth();
+  if (user) { renderNavbar('orders'); renderOrders(); }
+
+  function renderOrders() {
+    const allOrders = getOrders();
+    // Farmers see all orders; customers/wholesalers see their own
+    const orders = user.role === 'Farmer' ? allOrders : allOrders.filter(o => o.user === user.username);
+    const el = document.getElementById('orders-list');
+
+    if (!orders.length) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><h3>No orders yet</h3><p>Place an order from the cart to see it here.</p><a href="products_html.html" class="btn btn-primary" style="margin-top:1rem">Shop Now</a></div>`;
+      return;
+    }
+
+    el.innerHTML = orders.map(o => `
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">${o.id}</div>
+            <div style="color:var(--gray);font-size:.82rem">📅 ${o.date} · 👤 ${o.user} · <span style="text-transform:capitalize">${o.role}</span></div>
+          </div>
+          <span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span>
+        </div>
+        <div class="order-items">
+          ${o.items.map(i => `<span style="display:inline-block;background:var(--green-pale);padding:3px 10px;border-radius:20px;margin:2px;font-size:.8rem">${i.name} ×${i.qty}</span>`).join('')}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+          <div class="order-total">₹${o.total}</div>
+          ${user.role === 'Farmer' ? `<button class="btn btn-sm btn-primary" onclick="markDelivered('${o.id}')">Mark Delivered ✓</button>` : ''}
+        </div>
+      </div>`).join('');
+  }
+
+  function markDelivered(orderId) {
+    const orders = getOrders();
+    const o = orders.find(x => x.id === orderId);
+    if (o) { o.status = 'Delivered'; set('fm_orders', orders); renderOrders(); showToast('Order marked as delivered!', 'success'); }
+  }
+</script>
+</body>
+</html>

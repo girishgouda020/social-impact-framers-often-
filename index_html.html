@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FarmerMart – Farm Fresh, Direct to You</title>
+  <link rel="stylesheet" href="style_css.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">🌾 <span>Farmer</span>Mart</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#stats">Why Us</a>
+    <a href="login_html.html">Login</a>
+  </div>
+  <a href="login_html.html" class="btn btn-accent btn-sm">Get Started →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🌱 100% Farm Fresh</div>
+  <h1>From <span>Farm</span> to Your<br/>Table, Directly.</h1>
+  <p>FarmerMart connects farmers directly with retail customers and wholesale buyers — cutting out the middleman and ensuring fair prices for everyone.</p>
+  <div class="hero-btns">
+    <a href="login_html.html" class="btn btn-white">🛒 Start Shopping</a>
+    <a href="login_html.html" class="btn btn-ghost">👨‍🌾 Sell as Farmer</a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-title">
+    <h2>Everything You Need</h2>
+    <p>A complete marketplace built for farmers and buyers alike</p>
+  </div>
+  <div class="card-grid" style="max-width:1100px;margin:0 auto;">
+    <div class="card feature-card">
+      <div class="feature-icon">👨‍🌾</div>
+      <h3>Farmer Dashboard</h3>
+      <p>List your products, set prices, and manage orders from a clean, simple dashboard.</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">🛒</div>
+      <h3>Easy Shopping</h3>
+      <p>Browse fresh produce, add to cart, and place orders in seconds — no hassle.</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">🏢</div>
+      <h3>Wholesale Buying</h3>
+      <p>Hotels, restaurants, and businesses can source bulk produce directly from farms.</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">📦</div>
+      <h3>Order Tracking</h3>
+      <p>Track every order with a unique ID, item list, total, and live status updates.</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>Fair Pricing</h3>
+      <p>No middlemen. Farmers set their own prices and buyers get the best deals.</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Secure & Simple</h3>
+      <p>Role-based access for Farmers, Customers, and Wholesalers — all in one platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section" id="stats">
+  <div class="stats-grid">
+    <div class="stat-item"><h3>500+</h3><p>Registered Farmers</p></div>
+    <div class="stat-item"><h3>12K+</h3><p>Happy Customers</p></div>
+    <div class="stat-item"><h3>300+</h3><p>Wholesale Buyers</p></div>
+    <div class="stat-item"><h3>50+</h3><p>Product Categories</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Join FarmerMart?</h2>
+  <p>Whether you grow it or need it — we've got you covered.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+    <a href="login_html.html" class="btn btn-primary">Login / Sign Up</a>
+    <a href="products_html.html" class="btn btn-outline">Browse Products</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>FarmerMart</span> — Connecting Farms to Tables 🌾</p>
+</footer>
+
+<script src="script_js.js"></script>
+<script>
+  // Redirect if already logged in
+  if (getUser()) window.location.href = 'dashboard_html.html';
+</script>
+</body>
+</html>
