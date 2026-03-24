@@ -36,7 +36,7 @@
       <div class="form-group">
         <label>Available For</label>
         <select id="p-type">
-          <option value="both">Both (Retail & Wholesale)</option>
+          <option value="both">Both (Retail &amp; Wholesale)</option>
           <option value="retail">Retail Only</option>
           <option value="wholesale">Wholesale Only</option>
         </select>
@@ -49,11 +49,11 @@
     <button class="btn btn-primary" onclick="submitProduct()">Add Product</button>
   </div>
 
-  <!-- Filter -->
+  <!-- Filters -->
   <div style="display:flex;gap:.8rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-    <button class="btn btn-outline btn-sm active-filter" onclick="filterProducts('all', this)">All</button>
-    <button class="btn btn-outline btn-sm" onclick="filterProducts('retail', this)">Retail</button>
-    <button class="btn btn-outline btn-sm" onclick="filterProducts('wholesale', this)">Wholesale</button>
+    <button class="btn btn-primary btn-sm" id="f-all"       onclick="filterProducts('all',       this)">All</button>
+    <button class="btn btn-outline btn-sm" id="f-retail"    onclick="filterProducts('retail',    this)">Retail</button>
+    <button class="btn btn-outline btn-sm" id="f-wholesale" onclick="filterProducts('wholesale', this)">Wholesale</button>
   </div>
 
   <div class="card-grid" id="products-grid"></div>
@@ -73,16 +73,20 @@
 
   function renderProducts() {
     const products = getProducts();
-    const filtered = currentFilter === 'all' ? products : products.filter(p => p.type === currentFilter || p.type === 'both');
+    const filtered = currentFilter === 'all'
+      ? products
+      : products.filter(p => p.type === currentFilter || p.type === 'both');
     const grid = document.getElementById('products-grid');
+
     if (!filtered.length) {
       grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🌿</div><h3>No products found</h3><p>Check back later or add some!</p></div>`;
       return;
     }
+
+    const canBuy = user.role !== 'Farmer';
     grid.innerHTML = filtered.map(p => {
       const badgeClass = p.type === 'retail' ? 'badge-retail' : p.type === 'wholesale' ? 'badge-wholesale' : 'badge-both';
       const badgeLabel = p.type === 'retail' ? 'Retail' : p.type === 'wholesale' ? 'Wholesale' : 'Retail & Wholesale';
-      const canBuy = user.role !== 'Farmer';
       return `
       <div class="product-card">
         <div class="product-img">${p.emoji || '🌿'}</div>
@@ -90,8 +94,10 @@
           <span class="type-badge ${badgeClass}">${badgeLabel}</span>
           <h3>${p.name}</h3>
           <div class="price">₹${p.price} <small style="font-size:.75rem;font-weight:400;color:var(--gray)">/ ${p.unit}</small></div>
-          <div class="seller">🧑‍🌾 ${p.seller || user.username}</div>
-          ${canBuy ? `<button class="btn btn-primary btn-sm btn-full" onclick="addToCart('${p.id}')">Add to Cart 🛒</button>` : '<span style="color:var(--gray);font-size:.82rem">Your listing</span>'}
+          <div class="seller">🧑🌾 ${p.seller || user.username}</div>
+          ${canBuy
+            ? `<button class="btn btn-primary btn-sm btn-full" onclick="addToCart('${p.id}')">Add to Cart 🛒</button>`
+            : '<span style="color:var(--gray);font-size:.82rem">Your listing</span>'}
         </div>
       </div>`;
     }).join('');
@@ -99,16 +105,18 @@
 
   function filterProducts(type, btn) {
     currentFilter = type;
-    document.querySelectorAll('.active-filter').forEach(b => b.classList.remove('active-filter', 'btn-primary'));
-    btn.classList.add('active-filter');
+    document.querySelectorAll('#f-all,#f-retail,#f-wholesale').forEach(b => {
+      b.className = 'btn btn-outline btn-sm';
+    });
+    btn.className = 'btn btn-primary btn-sm';
     renderProducts();
   }
 
   function submitProduct() {
-    const name = document.getElementById('p-name').value.trim();
+    const name  = document.getElementById('p-name').value.trim();
     const price = parseFloat(document.getElementById('p-price').value);
-    const unit = document.getElementById('p-unit').value.trim() || 'kg';
-    const type = document.getElementById('p-type').value;
+    const unit  = document.getElementById('p-unit').value.trim() || 'kg';
+    const type  = document.getElementById('p-type').value;
     const emoji = document.getElementById('p-emoji').value.trim() || '🌿';
     if (!name || !price || price <= 0) { showToast('Please fill name and valid price', 'error'); return; }
     addProduct({ name, price, unit, type, emoji, seller: user.username });
