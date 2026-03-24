@@ -26,8 +26,9 @@
 
   function renderOrders() {
     const allOrders = getOrders();
-    // Farmers see all orders; customers/wholesalers see their own
-    const orders = user.role === 'Farmer' ? allOrders : allOrders.filter(o => o.user === user.username);
+    const orders = user.role === 'Farmer'
+      ? allOrders
+      : allOrders.filter(o => o.user === user.username);
     const el = document.getElementById('orders-list');
 
     if (!orders.length) {
@@ -49,7 +50,9 @@
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
           <div class="order-total">₹${o.total}</div>
-          ${user.role === 'Farmer' ? `<button class="btn btn-sm btn-primary" onclick="markDelivered('${o.id}')">Mark Delivered ✓</button>` : ''}
+          ${user.role === 'Farmer' && o.status === 'Pending'
+            ? `<button class="btn btn-sm btn-primary" onclick="markDelivered('${o.id}')">Mark Delivered ✓</button>`
+            : ''}
         </div>
       </div>`).join('');
   }
@@ -57,7 +60,12 @@
   function markDelivered(orderId) {
     const orders = getOrders();
     const o = orders.find(x => x.id === orderId);
-    if (o) { o.status = 'Delivered'; set('fm_orders', orders); renderOrders(); showToast('Order marked as delivered!', 'success'); }
+    if (o) {
+      o.status = 'Delivered';
+      set('fm_orders', orders);
+      renderOrders();
+      showToast('Order marked as delivered! ✓', 'success');
+    }
   }
 </script>
 </body>
