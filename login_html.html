@@ -23,7 +23,7 @@
     <button class="btn btn-primary btn-full" onclick="handleLogin()">Login →</button>
 
     <div class="auth-footer">
-      Don't have an account? <a href="login_html.html" onclick="handleLogin()">Just enter a name & login</a>
+      New here? <a href="#" onclick="handleLogin()">Just enter a name &amp; login</a>
     </div>
   </div>
 </div>
@@ -38,7 +38,6 @@
     const password = document.getElementById('password').value.trim();
     if (!username) { showToast('Please enter a username', 'error'); return; }
     if (!password) { showToast('Please enter a password', 'error'); return; }
-    // Store temp user without role, go to role selection
     set('fm_temp_user', username);
     window.location.href = 'role_html.html';
   }
