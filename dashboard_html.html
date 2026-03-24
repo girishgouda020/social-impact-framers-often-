@@ -20,7 +20,7 @@
 
   <div class="dash-grid" id="dash-cards"></div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap;" id="recent-section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;" id="recent-section">
     <div class="card">
       <h3 style="font-weight:700;margin-bottom:1rem;">🛒 Cart Summary</h3>
       <div id="cart-summary-dash"></div>
@@ -46,9 +46,9 @@
     const orders = getOrders().filter(o => o.user === user.username);
 
     const cards = [
-      { icon: '🌿', label: 'Products', count: products.length, link: 'products_html.html', desc: 'Browse all listings' },
-      { icon: '🛒', label: 'Cart Items', count: cart.length, link: 'cart_html.html', desc: 'Items in your cart' },
-      { icon: '📦', label: 'My Orders', count: orders.length, link: 'orders_html.html', desc: 'Track your orders' },
+      { icon: '🌿', label: 'Products',   count: products.length, link: 'products_html.html', desc: 'Browse all listings'  },
+      { icon: '🛒', label: 'Cart Items', count: cart.length,     link: 'cart_html.html',     desc: 'Items in your cart'   },
+      { icon: '📦', label: 'My Orders',  count: orders.length,   link: 'orders_html.html',   desc: 'Track your orders'    },
     ];
     if (user.role === 'Farmer') {
       cards.push({ icon: '➕', label: 'Add Product', count: '→', link: 'products_html.html', desc: 'List a new product' });
@@ -85,7 +85,7 @@
         <div style="padding:.6rem 0;border-bottom:1px solid #f3f4f6;">
           <div style="display:flex;justify-content:space-between;font-size:.88rem">
             <span style="font-weight:700">${o.id}</span>
-            <span class="status-badge status-pending">${o.status}</span>
+            <span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span>
           </div>
           <div style="color:var(--gray);font-size:.8rem;margin-top:.2rem">₹${o.total} · ${o.date}</div>
         </div>`).join('');
